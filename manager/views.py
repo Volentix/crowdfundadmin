@@ -1,19 +1,20 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.views import generic
 from .models import Investor
 
-def index(request):
-    latest_investor_list = Investor.objects.order_by('-kyc_date')[:5]
-    return render(request, 'manager/index.html', {'latest_investor_list': latest_investor_list})
+class IndexView(generic.ListView):
+    template_name = 'manager/index.html'
+    context_object_name = 'latest_investor_list'
 
-def detail(request, investor_id):
-    investor = get_object_or_404(Investor, pk=investor_id)
-    return render(request, 'manager/detail.html', {'investor': investor})
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Investor.objects.order_by('-kyc_date')[:5]
 
-def results(request, investor_id):
-    response = "You're looking at the results of investor %s."
-    return HttpResponse(response % investor_id)
+class DetailView(generic.DetailView):
+    model = Investor
+    template_name = 'manager/detail.html'
 
 def vote(request, investor_id):
     investor = get_object_or_404(Investor, pk=investor_id)

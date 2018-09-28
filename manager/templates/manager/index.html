@@ -1,3 +1,7 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'manager/style.css' %}">
+
 {% if latest_investor_list %}
     <table>
     {% for investor in latest_investor_list %}
