@@ -1,0 +1,18 @@
+{% if latest_investor_list %}
+    <table>
+    {% for investor in latest_investor_list %}
+        <tr>
+            <td><a href="{% url 'detail' investor.id %}">{{ investor.id }}</a></td>
+            <td>{{ investor.blocktopusid }}</td>
+            <td>{{ investor.token }}</td>
+
+            <td>{{ investor.public_address }}</td>
+            <td>{{ investor.verto_address }}</td>
+            <td>{{ investor.kyc_date }}</td>
+            <td>{{ investor.whitelist_date }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No investors are available.</p>
+{% endif %}
