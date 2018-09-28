@@ -1,22 +1,13 @@
 <h1>{{ investor.id }}</h1>
 
-<table>
-        <tr>
-            <td>Blocktopus ID: {{ investor.blocktopusid }}</td>
-        </tr>
-        <tr>
-            <td>Token: {{ investor.token }}</td>
-        </tr>
-        <tr>
-            <td>Public Address{{ investor.public_address }}</td>
-        </tr>
-        <tr>
-            <td>Verto Address: {{ investor.verto_address }}</td>
-        </tr>
-        <tr>
-            <td>KYC Date: {{ investor.kyc_date }}</td>
-        </tr>
-        <tr>
-            <td>Whitelist Date:{{ investor.whitelist_date }}</td>
-        </tr>
-    </table>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'manager:vote' investor.id %}" method="post">
+{% csrf_token %}
+    <label>Token: </label>
+    <label>{{ investor.token }}</label><br>
+    
+    <label>Public Address: </label>
+    <input type="text" name="public_address" placeholder="{{ investor.public_address }}"></input><br>
+    <input type="submit" value="Update">
+</form>

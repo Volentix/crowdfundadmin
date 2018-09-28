@@ -1,6 +1,6 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.template import loader
+from django.urls import reverse
 from .models import Investor
 
 def index(request):
@@ -16,6 +16,7 @@ def results(request, investor_id):
     return HttpResponse(response % investor_id)
 
 def vote(request, investor_id):
-    return HttpResponse("You're voting on investor %s." % investor_id)
-
-# Create your views here.
+    investor = get_object_or_404(Investor, pk=investor_id)
+    investor.public_address = request.POST['public_address']
+    investor.save()
+    return HttpResponseRedirect(reverse('manager:index'))
